@@ -12,8 +12,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kafka.configuration.SimpleJsonSerializer;
@@ -25,7 +25,8 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class KafkaConsumer {
+@Component
+public class KafkaToDBConsumer {
 
 	@Autowired
 	@Getter
