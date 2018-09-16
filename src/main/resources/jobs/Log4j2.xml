@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss,SSS} %-5level [%thread][%logger{1.}] %msg%n"/>
+        </Console>
+        
+        <RollingFile name="AllMsgsFile"
+                     fileName="${sys:log4j.file.name}.log"
+                     filePattern="${sys:log4j.file.name}-%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout pattern="%d %-5level [%thread][%logger{1.}] %msg%n"/>
+            <!-- Rolls over file on startup, on new date and on size-->
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <!-- maximum 15 backups-->
+            <DefaultRolloverStrategy max="15"/>
+        </RollingFile>
+ 
+        <RollingFile name="ErrorMsgsFile"
+                     fileName="${sys:log4j.error.file.name}.log"
+                     filePattern="${sys:log4j.error.file.name}-%d{MM-dd-yyyy}-%i.log"
+                     ignoreExceptions="false">
+            <PatternLayout pattern="%d %-5level [%thread][%logger{1.}] %msg%n"/>
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" />
+            </Filters>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+ 
+
+    </Appenders>
+ 
+    <Loggers>
+ 
+        <logger name="org.springframework.integration.handler.LoggingHandler" level="info"/>
+        
+        <logger name="org.springframework.jdbc.datasource.DriverManagerDataSource" level="warn"/>
+        <logger name="org.springframework.context.annotation.ConfigurationClassEnhancer" level="ERROR" />
+ 
+        <logger name="org.springframework" level="warn"/>
+ 
+        <logger name="com.atomikos" level="warn"/>
+ 
+        <logger name="org.springframework.jdbc" level="info"/>
+    
+        <Root level="debug" additivity="true">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="AllMsgsFile"/>
+            <AppenderRef ref="ErrorMsgsFile"/>
+        </Root>
+ 
+    </Loggers>
+</Configuration>
+
+<!-- 
+-Dspring.main.sources=file:jobs/config.xml
+-Dspring.batch.job.names=readDBWriteKafkaAndDb
+-Dspring.config.name=jobs/application
+-Dlog4j.file.name=../logs/readDBWriteKafkaAndDb
+-Dlog4j.error.file.name=../logs/readDBWriteKafkaAndDb_Error
+-->
