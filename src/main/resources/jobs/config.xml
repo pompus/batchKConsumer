@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:bt="http://www.springframework.org/schema/batch" xmlns:aop="http://www.springframework.org/schema/aop"
+ xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
 	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-              http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
               http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
               http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-              http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
-              http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd">
+              http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
 	<context:property-placeholder
 		properties-ref="defaultValues" />
@@ -23,14 +21,13 @@
 		</property>
 	</bean>
 
-	<bean id="jdbcBatchWriter" class="com.writer.JdbcBatchWriter"
-		scope="step">
+	<bean id="jdbcBatchWrite" class="com.writer.JdbcBatchWriter">
 		<property name="dataSource" ref="outputDataSource" />
 		<property name="retryOnErrorInBatchWriting" value="true" />
 		<property name="sql">
 			<value><![CDATA[
-		 merge into target_profile using dual on (user_id= :USERID) when matched then update set profile_id= :PROFILE
-		 when not matched then insert (user_id,profile_id) values (:USERID,:PROFILE)
+		 merge into target_profile using dual on (user_id= :userId) when matched then update set profile_id= :profile
+		 when not matched then insert (user_id,profile_id) values (:userId,:profile)
 		 ]]></value>
 		</property>
 	</bean>

@@ -25,7 +25,7 @@ import lombok.extern.log4j.Log4j2;
  * @author sahasuba
  * 
  */
-@Component
+
 @Log4j2
 public class JdbcBatchWriter<T> implements InitializingBean {
 

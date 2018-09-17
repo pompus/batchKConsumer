@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.sql.DataSource;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +27,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Component
-public class KafkaToDBConsumer {
+public class KafkaToDBConsumer implements InitializingBean{
 
 	@Autowired
 	@Getter
@@ -37,7 +38,7 @@ public class KafkaToDBConsumer {
 	@Autowired
 	@Getter
 	@Setter
-	@Qualifier("jdbcBatchWriter")
+	@Qualifier("jdbcBatchWrite")
 	private JdbcBatchWriter writer;
 
 	@Value("${kafka.topic.key}")
@@ -97,5 +98,11 @@ public class KafkaToDBConsumer {
 		} catch (Exception e) {
 			log.error("exception {} ", e);
 		}
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }
